@@ -1,3 +1,15 @@
 document.querySelectorAll('img').forEach(function(img) {
-  img.src = 'https://cdn.pixabay.com/photo/2017/05/29/15/34/kitten-2354016_1280.jpg'; // Replace with your cat image URL
+    console.log('img.src', img.src);
+    fetch('https://api.thecatapi.com/v1/images/search')
+        .then(response => {
+            if (!response.ok) {
+                img.src = 'https://http.cat/404';
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            img.src = data[0].url;
+        })
+        .catch(error => img.src = 'https://http.cat/404');
 });
